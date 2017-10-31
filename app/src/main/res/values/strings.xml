@@ -1,3 +1,20 @@
 <resources>
+
     <string name="app_name">MarketOffers</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="age">Edad</string>
+    <string name="sex">Sexo</string>
+    <string name="signup">Registrarse</string>
+    <string name="login">Iniciar sesion</string>
+    <string name="accept_offer">Aceptar oferta</string>
+    <string name="offer_accepted">Oferta aceptada!</string>
+    <string name="generate_barcode">Generar codigo de barras</string>
+    <string name="see_accepted_offers">Ver ofertas aceptadas</string>
+
+    <string-array name="sex_options">
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
 </resources>

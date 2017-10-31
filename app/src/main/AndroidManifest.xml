@@ -14,13 +14,41 @@
         android:theme="@style/AppTheme"
         >
 
-        <activity android:name=".ui.offers.OffersActivity">
+        <activity
+            android:name=".ui.offers.OffersActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.login.SignupActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.offers.AcceptedOffersActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.show_qr.ShowQrActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.scan_qr.ScanQrActivity"
+            android:screenOrientation="portrait"
+            />
+
     </application>
 
 </manifest>

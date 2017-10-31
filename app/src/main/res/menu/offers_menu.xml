@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<item-->
+        <!--android:id="@+id/checkout"-->
+        <!--android:title="Generate QR"-->
+        <!--android:icon="@drawable/ic_qr_show"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/scan"-->
+        <!--android:title="Scan QR"-->
+        <!--android:icon="@drawable/ic_qr_scan"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--/>-->
+
+</menu>

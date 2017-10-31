@@ -8,10 +8,10 @@
     >
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/offers_list"
+        android:id="@+id/accepted_offers_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/offer_view"
+        tools:listitem="@layout/accepted_offer_view"
         />
 
 </LinearLayout>

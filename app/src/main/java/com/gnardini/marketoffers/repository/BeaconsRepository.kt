@@ -1,26 +1,56 @@
 package com.gnardini.marketoffers.repository
 
 import com.gnardini.marketoffers.model.Offer
+import com.gnardini.marketoffers.repository.services.BeaconsService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class BeaconsRepository {
+class BeaconsRepository(private val beaconsService: BeaconsService,
+                        private val userRepository: UserRepository) {
 
-    val beacons = mutableMapOf<String, Offer>()
+    private val beacons = mutableMapOf<String, Offer>()
 
-    init {
-        beacons["8a21138990e1ebcd058f6b8485d13e31"] = Offer("Cola Cola 2L", 20f)
-        beacons["35393280630e846f9e9dafd54785550b"] = Offer("Pepsi 2L", 16f)
-        beacons["8fc235de0ae8970001cc12102f6e3b0e"] = Offer("Agua Sierra de los Padres 2L", 10f)
+    fun loadBeacons() {
+        beaconsService
+                .fetchOffers(userRepository.getLoggedUserId())
+                .enqueue(object : Callback<Map<String, Offer>> {
+
+                    override fun onResponse(call: Call<Map<String, Offer>>?, response: Response<Map<String, Offer>>) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { beacons.putAll(it) }
+                        } else {
+                            tryLoadingAgain()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Map<String, Offer>>?, t: Throwable?) {
+                        tryLoadingAgain()
+                    }
+                })
+    }
+
+    fun tryLoadingAgain() {
+        // TODO Retry loading
+    }
+
+    fun acceptOffer(offer: Offer) {
+        beaconIdFromOffer(offer)?.let {
+            beacons[it] = offer.copy(accepted = true)
+        }
     }
 
     fun offerFromBeacon(id: String) = beacons[id]
 
-//    {
-//        val offer = beacons[id]
-//        if (offer == null) {
-//            callback.onError("No beacon registered with that ID")
-//        } else {
-//            callback.onSuccess(offer)
-//        }
-//    }
+    private fun beaconIdFromOffer(offer: Offer): String? {
+        beacons.entries.forEach {
+            if (it.value.id == offer.id) {
+                return it.key
+            }
+        }
+        return null
+    }
+
+    fun getAcceptedOffers() = beacons.values.filter { it.accepted }
 
 }

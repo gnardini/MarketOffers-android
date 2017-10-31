@@ -12,7 +12,7 @@ class OffersTracker(
         private val offersListener: OffersListener) {
 
     private val MAX_DISTANCE = 1f
-    private val TOLERANCE_MILLIS = 20 * 1000
+    private val TOLERANCE_MILLIS = 15 * 1000
 
     private val beaconManager = BeaconManager(appContext)
     private val lastAppearance = mutableMapOf<String, Long>()
@@ -31,7 +31,7 @@ class OffersTracker(
                 .plus(recentBeacons())
                 .distinct()
                 .mapNotNull { beaconsRepository.offerFromBeacon(it) }
-                .sortedBy { it.product }
+                .sortedBy { it.id }
 
         offersListener.onOffersReady(offers)
     }
