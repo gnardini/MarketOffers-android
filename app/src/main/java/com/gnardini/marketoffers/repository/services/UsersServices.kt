@@ -9,9 +9,9 @@ import retrofit2.http.POST
 interface UsersServices {
 
     @POST("/login")
-    fun login(@Body login: LoginObject): Call<Int>
+    fun login(@Body login: LoginObject): Call<String>
 
     @POST("/signup")
-    fun signup(@Body signup: SignUpObject): Call<Int>
+    fun signup(@Body signup: SignUpObject): Call<String>
 
 }

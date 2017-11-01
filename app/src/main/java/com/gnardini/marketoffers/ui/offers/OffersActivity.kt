@@ -12,9 +12,11 @@ import com.gnardini.marketoffers.R
 import com.gnardini.marketoffers.extensions.commonInjector
 import com.gnardini.marketoffers.extensions.repositoryInjector
 import com.gnardini.marketoffers.extensions.startActivity
+import com.gnardini.marketoffers.extensions.startActivityClearingTask
 import com.gnardini.marketoffers.kotterknife.bindView
 import com.gnardini.marketoffers.model.Offer
 import com.gnardini.marketoffers.offers.OffersListener
+import com.gnardini.marketoffers.ui.login.LoginActivity
 
 class OffersActivity : AppCompatActivity(), OffersListener {
 
@@ -22,6 +24,7 @@ class OffersActivity : AppCompatActivity(), OffersListener {
     private val seeAcceptedOffers by bindView<View>(R.id.see_accepted_offers)
     private val offersTracker by lazy { commonInjector.createOffersTracker(this) }
     private val beaconsRepository by lazy { repositoryInjector.beaconsRepository }
+    private val usersRepository by lazy { repositoryInjector.usersRepository }
 
     private lateinit var offersAdapter : OffersAdapter
 
@@ -56,11 +59,15 @@ class OffersActivity : AppCompatActivity(), OffersListener {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val itemId = item?.itemId ?: -1
-//        when (itemId) {
-//            R.id.checkout -> startActivity(ShowQrActivity::class.java)
-//            R.id.scan -> startActivity(ScanQrActivity::class.java)
-//        }
+        when (itemId) {
+            R.id.logout -> logout()
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun logout() {
+        usersRepository.logout()
+        startActivityClearingTask(LoginActivity::class.java)
     }
 
     override fun onDestroy() {

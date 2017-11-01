@@ -8,7 +8,7 @@ import android.widget.Spinner
 import com.gnardini.marketoffers.R
 import com.gnardini.marketoffers.extensions.repositoryInjector
 import com.gnardini.marketoffers.extensions.showToast
-import com.gnardini.marketoffers.extensions.startActivity
+import com.gnardini.marketoffers.extensions.startActivityClearingTask
 import com.gnardini.marketoffers.kotterknife.bindView
 import com.gnardini.marketoffers.model.Sex
 import com.gnardini.marketoffers.model.SignUpObject
@@ -54,11 +54,11 @@ class SignupActivity: AppCompatActivity() {
         val ageNumber = Integer.parseInt(ageText)
         val sexChosen = Sex.values()[sex.selectedItemPosition]
         val signupObject = SignUpObject(usernameText, passwordText, ageNumber, sexChosen)
-        usersRepo.signup(signupObject, object : RepoCallback<Int> {
+        usersRepo.signup(signupObject, object : RepoCallback<String> {
 
-            override fun onSuccess(id: Int) {
+            override fun onSuccess(id: String) {
                 usersRepo.saveUserId(id)
-                startActivity(OffersActivity::class.java)
+                startActivityClearingTask(OffersActivity::class.java)
             }
 
             override fun onError(error: String) {

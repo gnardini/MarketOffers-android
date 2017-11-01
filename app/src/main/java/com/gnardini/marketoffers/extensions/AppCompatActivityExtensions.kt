@@ -8,6 +8,6 @@ fun AppCompatActivity.startActivity(clazz: Class<out Activity>) = startActivity(
 
 fun AppCompatActivity.startActivityClearingTask(clazz: Class<out Activity>) {
     val intent = Intent(this, clazz)
-    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
     startActivity(intent)
 }

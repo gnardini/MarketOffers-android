@@ -10,15 +10,19 @@ import retrofit2.Response
 
 class UserRepository(private val usersService: UsersServices) {
 
-    fun getLoggedUserId() = StorageUtils.getIntFromSharedPreferences(USER_KEY, -1)
+    fun isUserLoggedIn() = StorageUtils.keyExists(USER_KEY)
 
-    fun saveUserId(id: Int) = StorageUtils.storeInSharedPreferences(USER_KEY, id)
+    fun getLoggedUserId() = StorageUtils.getStringFromSharedPreferences(USER_KEY, "")
 
-    fun login(loginObject: LoginObject, repoCallback: RepoCallback<Int>) {
+    fun saveUserId(id: String) = StorageUtils.storeInSharedPreferences(USER_KEY, id)
+
+    fun logout() = StorageUtils.clearKey(USER_KEY)
+
+    fun login(loginObject: LoginObject, repoCallback: RepoCallback<String>) {
         usersService
                 .login(loginObject)
-                .enqueue(object : Callback<Int> {
-                    override fun onResponse(call: Call<Int>?, response: Response<Int>) {
+                .enqueue(object : Callback<String> {
+                    override fun onResponse(call: Call<String>?, response: Response<String>) {
                         if (response.isSuccessful) {
                             response.body()?.let { id -> repoCallback.onSuccess(id) }
                         } else {
@@ -27,17 +31,17 @@ class UserRepository(private val usersService: UsersServices) {
 
                     }
 
-                    override fun onFailure(call: Call<Int>?, t: Throwable) {
+                    override fun onFailure(call: Call<String>?, t: Throwable) {
                         repoCallback.onError("Error")
                     }
                 })
     }
 
-    fun signup(signupObject: SignUpObject, repoCallback: RepoCallback<Int>) {
+    fun signup(signupObject: SignUpObject, repoCallback: RepoCallback<String>) {
         usersService
                 .signup(signupObject)
-                .enqueue(object : Callback<Int> {
-                    override fun onResponse(call: Call<Int>?, response: Response<Int>) {
+                .enqueue(object : Callback<String> {
+                    override fun onResponse(call: Call<String>?, response: Response<String>) {
                         if (response.isSuccessful) {
                             response.body()?.let { id -> repoCallback.onSuccess(id) }
                         } else {
@@ -46,7 +50,7 @@ class UserRepository(private val usersService: UsersServices) {
 
                     }
 
-                    override fun onFailure(call: Call<Int>?, t: Throwable) {
+                    override fun onFailure(call: Call<String>?, t: Throwable) {
                         repoCallback.onError("Error")
                     }
                 })
@@ -57,3 +61,4 @@ class UserRepository(private val usersService: UsersServices) {
     }
 
 }
+

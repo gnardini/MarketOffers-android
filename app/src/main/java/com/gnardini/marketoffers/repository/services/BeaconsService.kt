@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface BeaconsService {
 
     @GET("/fetch_offers")
-    fun fetchOffers(@Query("user_id") userId: Int) : Call<Map<String, Offer>>
+    fun fetchOffers(@Query("user_id") userId: String) : Call<Map<String, Offer>>
 
 }

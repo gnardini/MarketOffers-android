@@ -8,6 +8,7 @@ import com.gnardini.marketoffers.R
 import com.gnardini.marketoffers.extensions.repositoryInjector
 import com.gnardini.marketoffers.extensions.showToast
 import com.gnardini.marketoffers.extensions.startActivity
+import com.gnardini.marketoffers.extensions.startActivityClearingTask
 import com.gnardini.marketoffers.kotterknife.bindView
 import com.gnardini.marketoffers.model.LoginObject
 import com.gnardini.marketoffers.repository.RepoCallback
@@ -24,6 +25,10 @@ class LoginActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (usersRepo.isUserLoggedIn()) {
+            startActivityClearingTask(OffersActivity::class.java)
+            return
+        }
         setContentView(R.layout.login_activity)
         login.setOnClickListener(this::loginClicked)
         signup.setOnClickListener(this::signupClicked)
@@ -41,11 +46,11 @@ class LoginActivity: AppCompatActivity() {
             return
         }
         val loginObject = LoginObject(usernameText, passwordText)
-        usersRepo.login(loginObject, object : RepoCallback<Int> {
+        usersRepo.login(loginObject, object : RepoCallback<String> {
 
-            override fun onSuccess(id: Int) {
+            override fun onSuccess(id: String) {
                 usersRepo.saveUserId(id)
-                startActivity(OffersActivity::class.java)
+                startActivityClearingTask(OffersActivity::class.java)
             }
 
             override fun onError(error: String) {

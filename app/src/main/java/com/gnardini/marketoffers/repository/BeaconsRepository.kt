@@ -1,5 +1,6 @@
 package com.gnardini.marketoffers.repository
 
+import android.os.Handler
 import com.gnardini.marketoffers.model.Offer
 import com.gnardini.marketoffers.repository.services.BeaconsService
 import retrofit2.Call
@@ -9,9 +10,14 @@ import retrofit2.Response
 class BeaconsRepository(private val beaconsService: BeaconsService,
                         private val userRepository: UserRepository) {
 
+    companion object {
+        val DELAY_BETWEEN_RETRIES = 5000L
+        val MAX_RETRIES = 5
+    }
+
     private val beacons = mutableMapOf<String, Offer>()
 
-    fun loadBeacons() {
+    fun loadBeacons(tryNumber: Int = 1) {
         beaconsService
                 .fetchOffers(userRepository.getLoggedUserId())
                 .enqueue(object : Callback<Map<String, Offer>> {
@@ -20,18 +26,20 @@ class BeaconsRepository(private val beaconsService: BeaconsService,
                         if (response.isSuccessful) {
                             response.body()?.let { beacons.putAll(it) }
                         } else {
-                            tryLoadingAgain()
+                            tryLoadingAgain(tryNumber)
                         }
                     }
 
                     override fun onFailure(call: Call<Map<String, Offer>>?, t: Throwable?) {
-                        tryLoadingAgain()
+                        tryLoadingAgain(tryNumber)
                     }
                 })
     }
 
-    fun tryLoadingAgain() {
-        // TODO Retry loading
+    fun tryLoadingAgain(tryNumber: Int) {
+        if (tryNumber < MAX_RETRIES) {
+            Handler().postDelayed({ loadBeacons(tryNumber + 1) }, DELAY_BETWEEN_RETRIES)
+        }
     }
 
     fun acceptOffer(offer: Offer) {
